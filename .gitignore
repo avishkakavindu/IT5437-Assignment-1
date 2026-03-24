@@ -1,0 +1,29 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+.qodo/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Assignment PDF (large binary, not source code)
+*.pdf
+
+# Data files (large binaries)
+data/
