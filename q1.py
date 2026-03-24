@@ -76,3 +76,65 @@ Conclusion:
   - When pixel values are closer to one(white) the exponentiation with γ > 1 will decrease the pixel values, making the image darker.
       when r = 0.5 and gamma = 2.0, s = 0.5^2.0 = 0.25 (darker)
 """
+# ----------------------------------------------------------------------------------
+
+"""
+Contrast Stretching (linear piecewise transformation
+
+The goal is to increase the contrast of an image by remapping pixel intensities.
+It "stretches" a narrow range of intensities to fill the full range [0, 1].
+> Think of it as: pixels that were bunched together in a small range get spread out across the full range.
+
+    s(r) = 0,         if r < r1        (dark pixels → pure black)
+    (r-r1)/(r2-r1),   if r1 ≤ r ≤ r2   (mid-range → stretched linearly)
+    1,                if r > r2        (bright pixels → pure white)
+
+    Visualized:
+      Output
+      1 |          ___________
+        |         /
+        |        /
+        |       /
+      0 |______/
+        0     r1   r2   1   Input
+          0.2  0.8
+"""
+
+
+def do_contrast_stretching(im, r1=0.3, r2=0.7):
+    normalized = im / 255.0
+
+    # create np array with same shape as the image, but with zeros and the values inside the array are floats
+    output = np.zeros_like(normalized, dtype=float)
+
+    # pixels bellow r1 make em zeros
+    output[normalized < r1] = 0
+    # pixels above r2 make em ones
+    output[normalized > r2] = 1
+
+    # mask for pixels between r1 and r2
+    mask = (normalized >= r1) & (normalized <= r2)
+    # stretch em linearly
+    output[mask] = (normalized[mask] - r1) / (r2 - r1)
+
+    # scale back to [0, 255]
+    output = np.uint8(output * 255)
+
+    # Plot side by side
+    plt.figure()
+
+    plt.subplot(1, 2, 1)
+    plt.imshow(im)
+    plt.title("Original")
+    plt.axis("off")
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(output)
+    plt.title(f"Contrast Stretching")
+    plt.axis("off")
+
+    plt.show()
+
+
+# Apply contrast stretching with r1=0.3 and r2=0.7
+do_contrast_stretching(img_rgb)
