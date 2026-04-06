@@ -25,5 +25,4 @@ Thumbs.db
 # Assignment PDF (large binary, not source code)
 *.pdf
 
-# Data files (large binaries)
-data/
+
